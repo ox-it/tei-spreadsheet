@@ -6,7 +6,7 @@ case "$MEDIA_TYPE" in
   "application/vnd.ms-excel")
     TEMP_DIR=`mktemp -d`
     unzip "$1" -d $TEMP_DIR > /dev/null
-    saxon office-open-xml/main.xsl -it:main url=${TEMP_DIR}/
+    saxon -it:main office-open-xml/main.xsl url=${TEMP_DIR}/
     rm -rf $TEMP_DIR
     ;;
   *)
