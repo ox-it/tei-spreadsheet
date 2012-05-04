@@ -82,14 +82,34 @@ The root element of this office document is a <xsl:value-of select="$office-docu
     <xsl:apply-templates select="sml:sheets/sml:sheet"/>
   </xsl:template>
 
+  <xsl:key name="strings" match="sml:si" use="count(preceding-sibling::*)"/>
+
   <xsl:template match="sml:sheet">
     <xsl:variable name="rels" select="tei-spreadsheet:rels(.)"/>
-    <xsl:variable name="shared-strings" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings']/@target)"/>
+    <xsl:variable name="shared-strings" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings']/@target)/sml:sst"/>
+
+
     <xsl:variable name="sheet-document" select="document($rels/*[@id=current()/@r:id]/@target)"/>
     <table>
       <head>
         <xsl:value-of select="@name"/>
       </head>
+      <xsl:for-each select="$sheet-document/sml:worksheet/sml:sheetData/sml:row">
+        <row n="{position()}">
+          <xsl:for-each select="sml:c">
+            <cell n="{position()}">
+              <xsl:choose>
+                <xsl:when test="@t='s'">
+                  <xsl:value-of select="key('strings', number(sml:v/text()), $shared-strings)/sml:t"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="sml:v"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </cell>
+          </xsl:for-each>
+        </row>
+      </xsl:for-each>
     </table>
   </xsl:template>
 </xsl:stylesheet>
