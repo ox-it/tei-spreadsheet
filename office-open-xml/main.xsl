@@ -143,7 +143,7 @@ The root element of this office document is a <xsl:value-of select="$office-docu
   <xsl:function name="tei-spreadsheet:flatten-column-codepoints">
     <xsl:param name="column-codepoints"/>
     <xsl:choose>
-      <xsl:when test="not($column-codepoints)">
+      <xsl:when test="not(count($column-codepoints))">
         <xsl:value-of select="0"/>
       </xsl:when>
       <xsl:otherwise>
