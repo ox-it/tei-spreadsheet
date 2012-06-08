@@ -97,7 +97,13 @@ The root element of this office document is a <xsl:value-of select="$office-docu
       <xsl:for-each select="$sheet-document/sml:worksheet/sml:sheetData/sml:row">
         <row n="{position()}">
           <xsl:for-each select="sml:c">
-            <cell n="{position()}">
+            <xsl:if test="preceding-sibling::sml:c">
+              <xsl:call-template name="insert-omitted-cells">
+                <xsl:with-param name="before" select="preceding-sibling::sml:c[1]"/>
+                <xsl:with-param name="after" select="."/>
+              </xsl:call-template>
+            </xsl:if>
+            <cell>
               <xsl:choose>
                 <xsl:when test="@t='s'">
                   <xsl:value-of select="key('strings', number(sml:v/text()), $shared-strings)/sml:t"/>
@@ -112,5 +118,49 @@ The root element of this office document is a <xsl:value-of select="$office-docu
       </xsl:for-each>
     </table>
   </xsl:template>
+
+  <xsl:template name="insert-omitted-cells">
+    <xsl:param name="before"/> <!-- e.g. 'Y6' -->
+    <xsl:param name="after"/><!-- e.g. 'AB6' -->
+
+    <xsl:variable name="before-column-number" select="tei-spreadsheet:column-number($before/@r)"/>
+    <xsl:variable name="after-column-number" select="tei-spreadsheet:column-number($after/@r)"/>
+
+<!--
+    <x ba="{$before}" bc="{$before-column-number}"  aa="{$after}" ac="{$after-column-number}"/>
+-->
+
+    <xsl:call-template name="empty-cells">
+      <xsl:with-param name="count" select="$after-column-number - $before-column-number - 1"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:function name="tei-spreadsheet:column-number">
+    <xsl:param name="cell-name"/>
+    <xsl:value-of select="tei-spreadsheet:flatten-column-codepoints(reverse(string-to-codepoints(replace($cell-name, '\d+', ''))))"/>
+  </xsl:function>
+
+  <xsl:function name="tei-spreadsheet:flatten-column-codepoints">
+    <xsl:param name="column-codepoints"/>
+    <xsl:choose>
+      <xsl:when test="not($column-codepoints)">
+        <xsl:value-of select="0"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="26*tei-spreadsheet:flatten-column-codepoints(subsequence($column-codepoints, 2)) + $column-codepoints[1]-65"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <xsl:template name="empty-cells">
+    <xsl:param name="count"/>
+    <xsl:if test="$count &gt; 0">
+      <cell/>
+      <xsl:call-template name="empty-cells">
+        <xsl:with-param name="count" select="$count - 1"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
 </xsl:stylesheet>
 
