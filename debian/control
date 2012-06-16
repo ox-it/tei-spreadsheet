@@ -1,0 +1,16 @@
+Source: tei-spreadsheet
+Section: tei
+Priority: extra
+Maintainer: Alexander Dutton <alexander.dutton@oucs.ox.ac.uk>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: https://github.com/oucs/tei-spreadsheet
+Vcs-Git: git://github.com/oucs/tei-spreadsheet.git
+
+Package: tei-spreadsheet
+Section: text
+Architecture: all
+Depends: ${misc:Depends},
+         libsaxonb-java
+Description: Conversion from XLSX to TEI XML.
+
