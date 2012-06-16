@@ -2,7 +2,8 @@ Spreadsheet to TEI conversion
 =============================
 
 This repository currently contains stylesheets to convert Office Open XML
-spreadsheets — i.e., the ``.xlsx`` spreadsheets created by Excel into TEI XML.
+spreadsheets — i.e., the ``.xlsx`` spreadsheets created by Excel — into TEI
+XML.
 
 Using
 -----
