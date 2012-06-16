@@ -8,9 +8,9 @@ XML.
 Using
 -----
 
-Simply use the convert script::
+Simply use the conversion script::
 
-    $ ./convert.sh spreadsheet.xlsx > output.xml
+    $ bin/spreadsheet2tei spreadsheet.xlsx > output.xml
 
 Features
 --------

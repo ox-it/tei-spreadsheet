@@ -3,11 +3,13 @@
 MEDIA_TYPE=`file -b --mime-type "$1"`
 EXTENSION=${1##*.}
 
+STYLESHEET_DIR=`dirname $0`
+
 function office-open-xml {
     echo $1
     TEMP_DIR=`mktemp -d`
     unzip "$1" -d $TEMP_DIR > /dev/null
-    saxon -it:main office-open-xml/main.xsl url=${TEMP_DIR}/
+    saxon -it:main ${STYLESHEET_DIR}/office-open-xml/main.xsl url=${TEMP_DIR}/
     rm -rf $TEMP_DIR
 }
 
