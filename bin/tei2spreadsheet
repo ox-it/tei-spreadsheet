@@ -3,7 +3,12 @@
 MEDIA_TYPE=`file -b --mime-type "$1"`
 EXTENSION=${1##*.}
 
-STYLESHEET_DIR=`dirname $0`/..
+SCRIPT_PATH=$0
+if [ -L $SCRIPT_PATH ] ; then
+    SCRIPT_PATH=`readlink -f $SCRIPT_PATH`
+fi
+STYLESHEET_DIR=`dirname $SCRIPT_PATH`/..
+
 
 SAXON=/usr/bin/saxon # RedHat distros
 if [ ! -e $SAXON ] ; then
