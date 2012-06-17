@@ -11,6 +11,7 @@ Package: tei-spreadsheet
 Section: text
 Architecture: all
 Depends: ${misc:Depends},
-         libsaxonb-java
+         libsaxonb-java,
+         unzip
 Description: Conversion from XLSX to TEI XML.
 
