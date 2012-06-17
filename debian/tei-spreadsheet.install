@@ -1,1 +1,2 @@
-* /usr/share/tei-spreadsheet/
+bin /usr/share/tei-spreadsheet/
+office-open-xml /usr/share/tei-spreadsheet/
