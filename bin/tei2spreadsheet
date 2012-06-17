@@ -5,18 +5,26 @@ EXTENSION=${1##*.}
 
 STYLESHEET_DIR=`dirname $0`
 
-function office-open-xml {
-    echo $1
-    TEMP_DIR=`mktemp -d`
-    unzip "$1" -d $TEMP_DIR > /dev/null
-    saxon -it:main ${STYLESHEET_DIR}/office-open-xml/main.xsl url=${TEMP_DIR}/
-    rm -rf $TEMP_DIR
-}
+SAXON=/usr/bin/saxon # RedHat distros
+if [ ! -e $SAXON ] ; then
+    SAXON=/usr/bin/saxonb-xslt # Debian
+fi
+if [ ! -e $SAXON ] ; then
+    echo "Couldn't find saxon."
+    die 1
+fi
 
 if [ ! -e "$1" ] ; then
   echo "File does not exist: $1"
   exit 1
 fi
+
+function office-open-xml {
+    TEMP_DIR=`mktemp -d`
+    unzip "$1" -d $TEMP_DIR > /dev/null
+    $SAXON -it:main ${STYLESHEET_DIR}/office-open-xml/main.xsl url=${TEMP_DIR}/
+    rm -rf $TEMP_DIR
+}
 
 case "$MEDIA_TYPE" in
   "application/vnd.ms-excel")
