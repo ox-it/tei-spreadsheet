@@ -10,6 +10,7 @@
     xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:dcmitype="http://purl.org/dc/dcmitype/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tei-spreadsheet="https://github.com/oucs/tei-spreadsheet">
   <xsl:output method="xml" indent="yes"/>
 
@@ -42,6 +43,28 @@
           target="{concat(replace($document-uri, '^(.*)/[^/]*$', '$1/'), @Target)}"/>
       </xsl:for-each>
     </tei-spreadsheet:rels>
+  </xsl:function>
+
+  <xsl:function name="tei-spreadsheet:parse-bstr">
+    <!-- Section 22.4.2.4 of the Office Open XML Standard¹  defines a bstr type
+         for reresenting Unicode characters that cannot be represented in XML
+         1.0. Hence, a carriage return can be represented as "_x000d_". This
+         function replaces such things with normal characters or decimal
+         entities for all but the null character (_x0000_).
+
+         ¹ http://www.ecma-international.org/publications/standards/Ecma-376.htm -->
+    <xsl:param name="text"/>
+
+    <xsl:for-each select="tokenize($text, '_x[\da-z]{4}_')">
+      <xsl:choose>
+        <xsl:when test="matches(., '_x[\da-z]{4}_') and . != '_x0000_'">
+          <xsl:value-of select="codepoints-to-string((xs:integer(substring(., 2, 4))))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:function>
 
   <xsl:template name="main">
@@ -107,6 +130,9 @@ The root element of this office document is a <xsl:value-of select="$office-docu
               <xsl:choose>
                 <xsl:when test="@t='s'">
                   <xsl:value-of select="key('strings', number(sml:v/text()), $shared-strings)/sml:t"/>
+                </xsl:when>
+                <xsl:when test="@t='inlineStr'">
+                  <xsl:value-of select="tei-spreadsheet:parse-bstr(sml:is/sml:t/text())"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="sml:v"/>
