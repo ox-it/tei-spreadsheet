@@ -55,9 +55,9 @@
          ¹ http://www.ecma-international.org/publications/standards/Ecma-376.htm -->
     <xsl:param name="text"/>
 
-    <xsl:for-each select="tokenize($text, '_x[\da-z]{4}_')">
+    <xsl:for-each select="tokenize($text, '_x[\da-zA-Z]{4}_')">
       <xsl:choose>
-        <xsl:when test="matches(., '_x[\da-z]{4}_') and . != '_x0000_'">
+        <xsl:when test="matches(., '_x[\da-zA-Z]{4}_') and . != '_x0000_'">
           <xsl:value-of select="codepoints-to-string((xs:integer(substring(., 2, 4))))"/>
         </xsl:when>
         <xsl:otherwise>
