@@ -71,6 +71,7 @@
       </xsl:choose>
   </xsl:function>
 
+
   <xsl:function name="tei-spreadsheet:hex-to-decimal">
     <xsl:param name="text"/>
     <xsl:variable name="codepoints" select="string-to-codepoints(upper-case($text))"/>
@@ -164,7 +165,7 @@ The root element of this office document is a <xsl:value-of select="$office-docu
             <cell>
               <xsl:choose>
                 <xsl:when test="@t='s'">
-                  <xsl:value-of select="key('strings', number(sml:v/text()), $shared-strings)/sml:t"/>
+                  <xsl:value-of select="tei-spreadsheet:parse-bstr(key('strings', number(sml:v/text()), $shared-strings)/sml:t)"/>
                 </xsl:when>
                 <xsl:when test="@t='inlineStr'">
                   <xsl:value-of select="tei-spreadsheet:parse-bstr(sml:is/sml:t/text())"/>
