@@ -54,17 +54,53 @@
 
          ¹ http://www.ecma-international.org/publications/standards/Ecma-376.htm -->
     <xsl:param name="text"/>
+    <xsl:variable name="pattern">(.*?)(_x[\da-zA-Z]{4}_)(.*)</xsl:variable>
 
-    <xsl:for-each select="tokenize($text, '_x[\da-zA-Z]{4}_')">
-      <xsl:choose>
-        <xsl:when test="matches(., '_x[\da-zA-Z]{4}_') and . != '_x0000_'">
-          <xsl:value-of select="codepoints-to-string((xs:integer(substring(., 2, 4))))"/>
+    <xsl:choose>
+      <xsl:when test="matches($text, $pattern)">
+          <xsl:variable name="before" select="replace($text, $pattern, '$1')"/>
+          <xsl:variable name="code" select="replace($text, $pattern, '$2')"/>
+          <xsl:variable name="after" select="replace($text, $pattern, '$3')"/>
+
+          <xsl:value-of select="$before"/>
+          <xsl:value-of select="codepoints-to-string((tei-spreadsheet:hex-to-decimal(substring($code, 3, 4))))"/>
+          <xsl:value-of select="tei-spreadsheet:parse-bstr($after)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="."/>
+          <xsl:value-of select="$text"/>
         </xsl:otherwise>
       </xsl:choose>
-    </xsl:for-each>
+  </xsl:function>
+
+  <xsl:function name="tei-spreadsheet:hex-to-decimal">
+    <xsl:param name="text"/>
+    <xsl:variable name="codepoints" select="string-to-codepoints(upper-case($text))"/>
+    <xsl:value-of select="tei-spreadsheet:hex-codepoints-to-decimal($codepoints)"/>
+  </xsl:function>
+
+  <xsl:function name="tei-spreadsheet:hex-codepoints-to-decimal">
+    <xsl:param name="codepoints"/>
+    <xsl:choose>
+      <xsl:when test="empty($codepoints)">0</xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="high" select="subsequence($codepoints, 1, count($codepoints)-1)"/>
+        <xsl:variable name="low" select="xs:integer($codepoints[count($codepoints)])"/>
+        <xsl:variable name="digit">
+          <xsl:choose>
+            <xsl:when test="48 le $low and $low lt 58">
+              <xsl:value-of select="$low - 48"/>
+            </xsl:when>
+            <xsl:when test="65 le $low and $low lt 71">
+              <xsl:value-of select="$low - 55"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:message terminate="yes">Unexpected hex digit: <xsl:value-of select="$low"/></xsl:message>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:value-of select="tei-spreadsheet:hex-codepoints-to-decimal($high) * 16 + $digit"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
 
   <xsl:template name="main">
