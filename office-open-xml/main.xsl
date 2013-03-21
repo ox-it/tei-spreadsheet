@@ -54,13 +54,12 @@
 
          ¹ http://www.ecma-international.org/publications/standards/Ecma-376.htm -->
     <xsl:param name="text"/>
-    <xsl:variable name="pattern">(.*?)(_x[\da-zA-Z]{4}_)(.*)</xsl:variable>
-
+    <xsl:variable name="pattern">^(.*?)(_x[\da-z]{4}_)(.*)$</xsl:variable>
     <xsl:choose>
-      <xsl:when test="matches($text, $pattern)">
-          <xsl:variable name="before" select="replace($text, $pattern, '$1')"/>
-          <xsl:variable name="code" select="replace($text, $pattern, '$2')"/>
-          <xsl:variable name="after" select="replace($text, $pattern, '$3')"/>
+      <xsl:when test="matches($text, $pattern, 'si')">
+          <xsl:variable name="before" select="replace($text, $pattern, '$1', 'si')"/>
+          <xsl:variable name="code" select="replace($text, $pattern, '$2', 'si')"/>
+          <xsl:variable name="after" select="replace($text, $pattern, '$3', 'si')"/>
 
           <xsl:value-of select="$before"/>
           <xsl:value-of select="codepoints-to-string((tei-spreadsheet:hex-to-decimal(substring($code, 3, 4))))"/>
