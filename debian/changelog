@@ -1,3 +1,9 @@
+tei-spreadsheet (0.1~rc-6) unstable; urgency=low
+
+  * Fixed broken bStr handling
+
+ -- Alexander Dutton <alexander.dutton@oucs.ox.ac.uk>  Thu, 21 Mar 2013 12:15:29 +0000
+
 tei-spreadsheet (0.1~rc-3) unstable; urgency=low
 
   * Case insensitive handling of bStrs in Office Open XML.
