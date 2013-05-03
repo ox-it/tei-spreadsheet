@@ -209,7 +209,7 @@ The root element of this office document is a <xsl:value-of select="$office-docu
         <xsl:value-of select="0"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="26*tei-spreadsheet:flatten-column-codepoints(subsequence($column-codepoints, 2)) + $column-codepoints[1]-65"/>
+        <xsl:value-of select="26*tei-spreadsheet:flatten-column-codepoints(subsequence($column-codepoints, 2)) + $column-codepoints[1]-64"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
