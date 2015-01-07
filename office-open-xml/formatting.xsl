@@ -55,7 +55,7 @@
         <xsl:when test="rPr/vertAlign[@val='superscript']">
           <xsl:choose>
             <xsl:when test="$with-bold='2'">²</xsl:when>
-            <xsl:when test="$with-bold='2'">³</xsl:when>
+            <xsl:when test="$with-bold='3'">³</xsl:when>
             <xsl:otherwise>
               <xhtml:sup>
                 <xsl:copy-of select="$with-bold"/>

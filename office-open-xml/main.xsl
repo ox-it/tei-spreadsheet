@@ -11,6 +11,7 @@
     xmlns:dcmitype="http://purl.org/dc/dcmitype/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:tei-spreadsheet="https://github.com/oucs/tei-spreadsheet">
   <xsl:output method="xml" indent="yes"/>
   <xsl:include href="formatting.xsl"/>
