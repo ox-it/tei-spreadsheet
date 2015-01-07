@@ -13,6 +13,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tei-spreadsheet="https://github.com/oucs/tei-spreadsheet">
   <xsl:output method="xml" indent="yes"/>
+  <xsl:include href="formatting.xsl"/>
 
   <xsl:param name="url"/>
 
@@ -164,7 +165,7 @@ The root element of this office document is a <xsl:value-of select="$office-docu
             <cell>
               <xsl:choose>
                 <xsl:when test="@t='s'">
-                  <xsl:value-of select="key('strings', number(sml:v/text()), $shared-strings)/sml:t"/>
+                  <xsl:apply-templates select="key('strings', number(sml:v/text()), $shared-strings)"/>
                 </xsl:when>
                 <xsl:when test="@t='inlineStr'">
                   <xsl:value-of select="tei-spreadsheet:parse-bstr(sml:is/sml:t/text())"/>
