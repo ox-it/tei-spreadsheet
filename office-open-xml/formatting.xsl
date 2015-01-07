@@ -20,10 +20,10 @@
         <xsl:copy-of select="$xhtml"/>
       </xsl:when>
       <xsl:otherwise>
-    <xhtml:div>
-        <xsl:copy-of select="$xhtml"/>
-    </xhtml:div>
-    </xsl:otherwise>
+        <xhtml:div>
+          <xsl:copy-of select="$xhtml"/>
+        </xhtml:div>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -31,22 +31,22 @@
     <xsl:variable name="with-br">
       <xsl:for-each select="tokenize(t/text(), '\n')">
         <xsl:if test="position() gt 1">
-      <xhtml:br/>
-    </xsl:if>
-    <xsl:copy-of select="."/>
+          <xhtml:br/>
+        </xsl:if>
+        <xsl:copy-of select="."/>
       </xsl:for-each>
     </xsl:variable>
 
     <xsl:variable name="with-bold">
       <xsl:choose>
         <xsl:when test="rPr/b">
-      <xhtml:b>
-        <xsl:copy-of select="$with-br"/>
-      </xhtml:b>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:copy-of select="$with-br"/>
-    </xsl:otherwise>
+          <xhtml:b>
+            <xsl:copy-of select="$with-br"/>
+          </xhtml:b>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="$with-br"/>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
