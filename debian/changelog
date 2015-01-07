@@ -1,3 +1,9 @@
+tei-spreadsheet (0.2) unstable; urgency=low
+
+  * Simple cell formatting support for Office Open XML.
+
+ -- Alexander Dutton <alexander.dutton@oucs.ox.ac.uk>  Wed, 7 Jan 2015 12:21:27 +0000
+
 tei-spreadsheet (0.1~rc-7) unstable; urgency=low
 
   * Fixed broken bStr handling
