@@ -15,13 +15,13 @@ if [ ! -e $SAXON ] ; then
     SAXON=/usr/bin/saxonb-xslt # Debian
 fi
 if [ ! -e $SAXON ] ; then
-    echo "Couldn't find saxon."
+    >&2 echo "Couldn't find saxon."
     exit 1
 fi
 
 if [ ! -e "$1" ] ; then
-  echo "File does not exist: $1"
-  exit 1
+    >&2 echo "File does not exist: $1"
+    exit 1
 fi
 
 function office-open-xml {
