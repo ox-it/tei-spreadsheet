@@ -29,7 +29,7 @@
 
   <xsl:template match="r">
     <xsl:variable name="with-br">
-      <xsl:for-each select="tokenize(t/text(), '\n')">
+      <xsl:for-each select="tokenize(t/text(), '\r\n')">
         <xsl:if test="position() gt 1">
           <xhtml:br/>
         </xsl:if>
