@@ -1,8 +1,14 @@
+tei-spreadsheet (0.3) unstable; urgency=low
+
+  * Simple date support
+
+ -- Alexander Dutton <alexander.dutton@it.ox.ac.uk>  Fri, 17 Jul 2015 16:31:04 +0100
+
 tei-spreadsheet (0.2) unstable; urgency=low
 
   * Simple cell formatting support for Office Open XML.
 
- -- Alexander Dutton <alexander.dutton@oucs.ox.ac.uk>  Wed, 7 Jan 2015 12:21:27 +0000
+ -- Alexander Dutton <alexander.dutton@it.ox.ac.uk>  Wed, 7 Jan 2015 12:21:27 +0000
 
 tei-spreadsheet (0.1~rc-7) unstable; urgency=low
 
