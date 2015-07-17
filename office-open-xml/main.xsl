@@ -147,6 +147,7 @@ The root element of this office document is a <xsl:value-of select="$office-docu
   <xsl:template match="sml:sheet">
     <xsl:variable name="rels" select="tei-spreadsheet:rels(.)"/>
     <xsl:variable name="shared-strings" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings']/@target)/sml:sst"/>
+    <xsl:variable name="styles" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles']/@target)/sml:sst"/>
 
 
     <xsl:variable name="sheet-document" select="document($rels/*[@id=current()/@r:id]/@target)"/>
