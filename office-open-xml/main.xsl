@@ -15,6 +15,7 @@
     xmlns:tei-spreadsheet="https://github.com/oucs/tei-spreadsheet">
   <xsl:output method="xml" indent="yes"/>
   <xsl:include href="formatting.xsl"/>
+  <xsl:include href="style.xsl"/>
 
   <xsl:param name="url"/>
 
@@ -147,7 +148,7 @@ The root element of this office document is a <xsl:value-of select="$office-docu
   <xsl:template match="sml:sheet">
     <xsl:variable name="rels" select="tei-spreadsheet:rels(.)"/>
     <xsl:variable name="shared-strings" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings']/@target)/sml:sst"/>
-    <xsl:variable name="styles" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles']/@target)/sml:sst"/>
+    <xsl:variable name="styles" select="document($rels/*[@type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles']/@target)/sml:styleSheet"/>
 
 
     <xsl:variable name="sheet-document" select="document($rels/*[@id=current()/@r:id]/@target)"/>
@@ -165,17 +166,23 @@ The root element of this office document is a <xsl:value-of select="$office-docu
               </xsl:call-template>
             </xsl:if>
             <cell>
-              <xsl:choose>
-                <xsl:when test="@t='s'">
-                  <xsl:apply-templates select="key('strings', number(sml:v/text()), $shared-strings)"/>
-                </xsl:when>
-                <xsl:when test="@t='inlineStr'">
-                  <xsl:value-of select="tei-spreadsheet:parse-bstr(sml:is/sml:t/text())"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="sml:v"/>
-                </xsl:otherwise>
-              </xsl:choose>
+              <xsl:variable name="value">
+                <xsl:choose>
+                  <xsl:when test="@t='s'">
+                    <xsl:apply-templates select="key('strings', number(sml:v/text()), $shared-strings)"/>
+                  </xsl:when>
+                  <xsl:when test="@t='inlineStr'">
+                    <xsl:value-of select="tei-spreadsheet:parse-bstr(sml:is/sml:t/text())"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="sml:v"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:apply-templates select="." mode="apply-style">
+                <xsl:with-param name="styles" select="$styles"/>
+                <xsl:with-param name="value" select="$value"/>
+              </xsl:apply-templates>
             </cell>
           </xsl:for-each>
         </row>
